@@ -26,7 +26,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-          flutter-version: '3.19.0' # Adjust if needed, or leave out to use latest stable
+          # Removed specific version to fetch latest stable, ensuring compatibility with flutter_rust_bridge v2
 
       - name: Install Flutter Dependencies
         run: flutter pub get
