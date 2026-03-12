@@ -1,0 +1,15 @@
+Act as a Senior Principal Engineer. I am building a production-ready, local-first AI document redaction and summarization desktop application. The frontend is Flutter, and the heavy-lifting backend is Rust.
+
+Task 1: Architecture & Bridge Setup
+Generate the boilerplate to connect a Flutter desktop application to a Rust backend using flutter_rust_bridge. The Rust backend must be prepared to handle heavy local operations.
+
+Task 2: State Management & Demo Mode Architecture
+Implement a rigorous state management solution in Flutter (e.g., Riverpod or Bloc). I need a strict Dependency Injection setup for the data layer. Create an interface DocumentRepository. Implement two classes: LocalDatabaseRepository (using Isar or SQLite) and MockDataRepository. Create a global state toggle for isDemoMode. When isDemoMode is true, the UI must seamlessly, instantaneously switch to streaming data exclusively from MockDataRepository (populate this with realistic-looking fake legal case data and pre-generated AI summaries). Real data must never bleed into the UI when Demo Mode is active.
+
+Task 3: Rust LLM Integration Skeleton
+Write the Rust backend skeleton code to load a local .gguf model (using llama.cpp bindings or similar). Create the asynchronous functions to accept a text string from Flutter, pass it to the local model with a system prompt for redaction, and stream the generated response back to the Flutter UI.
+
+Task 4: License Validation Logic
+Write a secure Rust function that accepts a string license key, verifies it against a cryptographic signature (simulating a local offline check), and securely stores a timestamp for the last successful validation. Ensure this logic is exposed to Flutter so the UI can lock the app if 30 days have passed without an internet heartbeat.
+
+Output the core folder structure, the interface contracts, and the critical Rust-to-Flutter bridging code to ensure the foundation is strictly production-grade.

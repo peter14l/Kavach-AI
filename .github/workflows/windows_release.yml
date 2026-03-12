@@ -1,0 +1,48 @@
+name: Windows Release Build
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build and Package MSIX
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: x86_64-pc-windows-msvc
+
+      - name: Install flutter_rust_bridge_codegen
+        run: cargo install flutter_rust_bridge_codegen --version 2.11.1
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          flutter-version: '3.19.0' # Adjust if needed, or leave out to use latest stable
+
+      - name: Install Flutter Dependencies
+        run: flutter pub get
+
+      - name: Generate Rust Bridge Code
+        run: flutter_rust_bridge_codegen generate
+
+      - name: Build Windows App
+        run: flutter build windows --release
+
+      - name: Package to MSIX
+        run: dart run msix:create
+
+      - name: Upload MSIX Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: AegisVault-Windows-MSIX
+          path: build/windows/x64/runner/Release/*.msix
+          if-no-files-found: error
