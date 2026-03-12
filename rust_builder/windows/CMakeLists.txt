@@ -9,7 +9,7 @@ set(PROJECT_NAME "rust_lib_aegis_vault")
 project(${PROJECT_NAME} LANGUAGES CXX)
 
 include("../cargokit/cmake/cargokit.cmake")
-apply_cargokit(${PROJECT_NAME} ../../../../../../rust rust_lib_aegis_vault "")
+apply_cargokit(${PROJECT_NAME} ../../../../../../rust rust_lib_aegis_vault "dummy_method_to_enforce_bundling")
 
 # List of absolute paths to libraries that should be bundled with the plugin.
 # This list could contain prebuilt libraries, or libraries created by an
