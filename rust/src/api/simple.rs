@@ -25,7 +25,11 @@ pub struct ProcessingUpdate {
 #[frb(init)]
 pub fn init_app() {
     // This is where we would initialize the global LLM runtime
-    // e.g. llama_cpp::init() or candle's device selection for GPU acceleration
+}
+
+#[frb(sync)]
+pub fn greet(name: String) -> String {
+    format!("Hello, {name}! Aegis-Vault is ready.")
 }
 
 /// Accept a document path and stream redaction/summarization progress.
