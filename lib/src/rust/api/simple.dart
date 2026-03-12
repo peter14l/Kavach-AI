@@ -8,3 +8,68 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 String greet({required String name}) =>
     RustLib.instance.api.crateApiSimpleGreet(name: name);
+
+/// Accept a document path and stream redaction/summarization progress.
+/// Uses a Sink to push updates back to Flutter asynchronously.
+Stream<ProcessingUpdate> processDocumentStream(
+        {required String path, required String systemPrompt}) =>
+    RustLib.instance.api.crateApiSimpleProcessDocumentStream(
+        path: path, systemPrompt: systemPrompt);
+
+/// Securely validate a license key.
+/// In production, this uses ed25519 signature verification against a local public key.
+/// The `key` format expected here is `base64(message):base64(signature)`
+Future<LicenseStatus> validateLicense({required String key}) =>
+    RustLib.instance.api.crateApiSimpleValidateLicense(key: key);
+
+/// Check if the 30-day heartbeat has expired.
+/// Flutter UI should lock if this returns true and no internet is available.
+Future<bool> isHeartbeatExpired({required BigInt lastChecked}) =>
+    RustLib.instance.api
+        .crateApiSimpleIsHeartbeatExpired(lastChecked: lastChecked);
+
+class LicenseStatus {
+  final bool isValid;
+  final int daysRemaining;
+  final BigInt lastChecked;
+
+  const LicenseStatus({
+    required this.isValid,
+    required this.daysRemaining,
+    required this.lastChecked,
+  });
+
+  @override
+  int get hashCode =>
+      isValid.hashCode ^ daysRemaining.hashCode ^ lastChecked.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is LicenseStatus &&
+          runtimeType == other.runtimeType &&
+          isValid == other.isValid &&
+          daysRemaining == other.daysRemaining &&
+          lastChecked == other.lastChecked;
+}
+
+class ProcessingUpdate {
+  final String step;
+  final double progress;
+
+  const ProcessingUpdate({
+    required this.step,
+    required this.progress,
+  });
+
+  @override
+  int get hashCode => step.hashCode ^ progress.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ProcessingUpdate &&
+          runtimeType == other.runtimeType &&
+          step == other.step &&
+          progress == other.progress;
+}
