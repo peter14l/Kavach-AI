@@ -1,9 +1,9 @@
 use std::time::{SystemTime, UNIX_EPOCH};
 use flutter_rust_bridge::frb;
-pub use flutter_rust_bridge::StreamSink;
 use lopdf::Document;
 use ed25519_dalek::{VerifyingKey, Signature, Verifier};
 use base64::prelude::*;
+use crate::frb_generated::StreamSink;
 
 // --- Architecture: Production-Grade Types ---
 
