@@ -47,7 +47,7 @@ jobs:
         continue-on-error: true # Don't fail if there are no changes or push fails
 
       - name: Build Windows App
-        run: flutter build windows --release
+        run: flutter build windows --release -v
 
       - name: Package to MSIX
         run: dart run msix:create
